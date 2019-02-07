@@ -22,6 +22,7 @@
   let lastX = 0;
   let lastY = 0;
   let hue = 0;
+  let direction = true;
 
 
   // function called whenever mouse is moved over canvas when clicked
@@ -31,7 +32,6 @@
     console.log(e);
 
     ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
-    ctx.lineWidth = hue;
     ctx.beginPath();
 
     // start from
@@ -44,6 +44,16 @@
     hue++;
     if(hue >= 360){
       hue = 0;
+    }
+    // increase and decrease lineWidth depending on direction relative to size 100
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1){
+      direction = !direction
+    }
+
+    if (direction){
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
     }
   }
 
