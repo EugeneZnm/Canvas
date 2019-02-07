@@ -5,7 +5,7 @@
   <title>HTML5 Canvas</title>
 </head>
 <body>
-<canvas id="draw" width="800" height="800"></canvas>
+<canvas id="draw" width="1500px" height="1500px"></canvas>
 <script>
 
   const canvas = document.querySelector('#draw');
@@ -14,7 +14,8 @@
   canvas.height = window.innerHeight;
   ctx.strokeStyle = '#BADASS';
   ctx.linejoin = 'round';
-  ctx.linecap = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 100;
 
   // allow drawing only when mouse is clicked
   let isDrawing = false;
@@ -23,11 +24,31 @@
 
   // function called whenever mouse is moved over canvas when clicked
   function draw (e) {
+    // stop function from running when mouse is not down
+    if(!isDrawing) return;
     console.log(e);
+    ctx.beginPath();
+
+    // start from
+    ctx.moveTo(lastX, lastY);
+
+    // go to
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    [lastX, lastY] = [e.offsetX, e.offsetY];
   }
 
+
   // even listener listening for mouse move event over canvas
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  });
+
   canvas.addEventListener('mousemove', draw);
+
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
 
 </script>
 
